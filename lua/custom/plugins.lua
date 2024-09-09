@@ -10,6 +10,7 @@ local plugins = {
       },
     },
   },
+-- LSP CONFIGURATION
   {
     "neovim/nvim-lspconfig",
     config = function()
@@ -17,24 +18,10 @@ local plugins = {
       require "custom.configs.lspconfig"
     end,
   },
-  {
-    "mfussenegger/nvim-dap",
-    init = function()
-      require("core.utils").load_mappings("dap")
-    end
-  },
-  {
-    "dreamsofcode-io/nvim-dap-go",
-    ft = { "go" },
-    dependencies = "mfussenegger/nvim-dap",
-    config = function(_, opts)
-      require("dap-go").setup(opts)
-      require("core.utils").load_mappings("dap_go")
-    end
-  },
+   -- RUST CONFIGURATION
   {
     "mrcjkb/rustaceanvim",
-    version = "^4",
+    version = "^5",
     ft = { "rust" },
     dependencies = "neovim/nvim-lspconfig",
     config = function()
@@ -83,6 +70,23 @@ local plugins = {
     end,
   },
   {
+    "mfussenegger/nvim-dap",
+    init = function()
+      require("core.utils").load_mappings("dap")
+    end
+  },
+ -- GO CONFIGURATION
+    {
+    "dreamsofcode-io/nvim-dap-go",
+    ft = { "go" },
+    dependencies = "mfussenegger/nvim-dap",
+    config = function(_, opts)
+      require("dap-go").setup(opts)
+      require("core.utils").load_mappings("dap_go")
+    end
+  },
+
+  {
     "jose-elias-alvarez/null-ls.nvim",
     ft = "go",
     opts = function()
@@ -100,11 +104,26 @@ local plugins = {
       vim.cmd [[silent! GoInstallDeps]]
     end,
   },
+  -- EXTRA CONFIGURATION
+  {
+    "hrsh7th/cmp-nvim-lsp-signature-help",
+    config = function (_, opts)
+      require('cmp').setup({sources = { name = 'nvim_lsp_signature_help'}})
+    end
+  },
   {
     "terrortylor/nvim-comment",
     config = function (_, opts)
       require('nvim_comment').setup({line_mapping = "<C-q>"})
     end
+  },
+  {
+    "hrsh7th/nvim-cmp",
+    opts = {
+      mapping = {
+        ["<C-Space>"] = cmp.mapping.complete(), -- Replace with whatever you want
+      },
+    },
   },
 }
 return plugins

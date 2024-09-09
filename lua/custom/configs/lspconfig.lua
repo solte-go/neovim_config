@@ -20,3 +20,9 @@ lspconfig.gopls.setup {
     },
   },
 }
+
+lspconfig.rust_analyzer.setup({
+    on_attach = function(client, bufnr)
+        vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+    end
+})
