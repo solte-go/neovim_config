@@ -2,13 +2,33 @@
 
 ## For Golang installation are required these dependencies
 
-go install github.com/go-delve/delve/cmd/dlv@latest
-go install github.com/segmentio/golines@latest
+```bash
+go install github.com/go-delve/delve/cmd/dlv@latest 
+```
+
+```bash
+go install github.com/segmentio/golines@latest 
+```
+
+```bash
 go install mvdan.cc/gofumpt@latest
-go install -v github.com/incu6us/goimports-reviser/v3@latest
+```
+
+```bash
+go install -v github.com/incu6us/goimports-reviser/v3@latest 
+```
+
+```bash
 go install github.com/fatih/gomodifytags@latest
-go install github.com/josharian/impl@latest
-go install github.com/koron/iferr@latest
+```
+
+```bash
+go install github.com/josharian/impl@latest 
+```
+
+```bash
+go install github.com/koron/iferr@latest 
+```
 
 And run:
 
