@@ -51,6 +51,16 @@ local plugins = {
         version = '^5',
         ft = { 'rust' },
         config = function()
+            local mason_registry = require('mason-registry')
+            local codelldb = mason_registry.get_package("codelldb")
+            local extension_path = codelldb:get_install_path() .. "/extension/"
+            local codelldb_path = extension_path .. "adapter/codelldb"
+            -- local liblldb_path = extension_path.. "lldb/lib/liblldb.dylib"
+	        -- If you are on Linux, replace the line above with the line below:
+	        local liblldb_path = extension_path .. "lldb/lib/liblldb.so"
+            local cfg = require('rustaceanvim.config')
+
+
             vim.api.nvim_create_autocmd("ColorScheme", {
                 callback = function()
                     vim.api.nvim_set_hl(0, "@lsp.type.inlayHint", {
@@ -182,19 +192,8 @@ local plugins = {
                 },
                 -- DAP configuration
                 dap = {
-                    adapter = function()
-                        local mason_registry = require('mason-registry')
-                        local codelldb = mason_registry.get_package('codelldb')
-                        local extension_path = codelldb:get_install_path() .. '/extension/'
-                        local codelldb_path = extension_path .. 'adapter/codelldb'
-                        local liblldb_path = extension_path .. 'lldb/lib/liblldb.so'
-
-                        return require('rustaceanvim.config').get_codelldb_adapter(
-                            codelldb_path,
-                            liblldb_path
-                        )
-                    end,
-                },
+                    adapter = cfg.get_codelldb_adapter(codelldb_path, liblldb_path),
+                  },
 
                 -- Tools configuration
                 tools = {
@@ -217,8 +216,14 @@ local plugins = {
             'williamboman/mason.nvim',
         },
     },
+
     {
-        'mfussenegger/nvim-dap',
+        "mfussenegger/nvim-dap",
+        ft = { 'rust' },
+        init = function()
+          require("core.utils").load_mappings("dap")
+        end,
+
         config = function()
             local dap, dapui = require("dap"), require("dapui")
             dap.listeners.before.attach.dapui_config = function()
@@ -235,6 +240,26 @@ local plugins = {
             end
         end,
     },
+
+    -- {
+    --     'mfussenegger/nvim-dap',
+    --     config = function()
+    --         local dap, dapui = require("dap"), require("dapui")
+    --         dap.listeners.before.attach.dapui_config = function()
+    --             dapui.open()
+    --         end
+    --         dap.listeners.before.launch.dapui_config = function()
+    --             dapui.open()
+    --         end
+    --         dap.listeners.before.event_terminated.dapui_config = function()
+    --             dapui.close()
+    --         end  
+    --         dap.listeners.before.event_exited.dapui_config = function()
+    --             dapui.close()
+    --         end
+    --         require ("custom").load_mappings("dap")
+    --     end,
+    -- },
     {
         'saecki/crates.nvim',
         ft = { "toml" },
