@@ -39,3 +39,6 @@ And run:
  ```
 :TSInstall rust
 ```
+```
+:MasonInstall codelldb
+```
